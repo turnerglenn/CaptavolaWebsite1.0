@@ -5,6 +5,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
 
 export default function WaitlistForm() {
   const [formData, setFormData] = useState({
@@ -15,14 +17,30 @@ export default function WaitlistForm() {
   });
   const { toast } = useToast();
 
+  const submitMutation = useMutation({
+    mutationFn: async (data: typeof formData) => {
+      const response = await apiRequest("POST", "/api/waitlist", data);
+      return await response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Thanks for your interest!",
+        description: "We'll be in touch soon to schedule your demo.",
+      });
+      setFormData({ name: "", email: "", company: "", message: "" });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Submission failed",
+        description: error.message || "Please try again later.",
+        variant: "destructive",
+      });
+    },
+  });
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    toast({
-      title: "Thanks for your interest!",
-      description: "We'll be in touch soon to schedule your demo.",
-    });
-    setFormData({ name: "", email: "", company: "", message: "" });
+    submitMutation.mutate(formData);
   };
 
   return (
@@ -95,8 +113,13 @@ export default function WaitlistForm() {
               />
             </div>
 
-            <Button type="submit" className="w-full" data-testid="button-submit">
-              Request Demo
+            <Button 
+              type="submit" 
+              className="w-full" 
+              data-testid="button-submit"
+              disabled={submitMutation.isPending}
+            >
+              {submitMutation.isPending ? "Submitting..." : "Request Demo"}
             </Button>
           </form>
         </Card>
