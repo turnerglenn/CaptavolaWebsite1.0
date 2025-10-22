@@ -1,125 +1,165 @@
-# Captavola - Cap Table Management Platform
+# Captavola - Cap Table Management SaaS
 
 ## Overview
+Captavola is a lightweight investor and cap table management platform designed for small and medium-sized pre-IPO businesses. The name comes from the Italian word "tavola" (table), emphasizing the concept of giving every stakeholder "a seat at the table."
 
-Captavola is a web-based cap table and equity management platform designed for pre-IPO businesses. The application provides lightweight tools for tracking ownership, managing investor communications, and maintaining equity transaction records. The platform emphasizes transparency, simplicity, and professional design inspired by Linear, Stripe, and Carta.
+## Current State
+- **Status**: Pre-release marketing website (fully functional)
+- **Last Updated**: October 22, 2025
+- **Type**: Full-stack marketing/landing page with waitlist functionality
 
-The application is built as a full-stack web application with a React frontend and Express backend, designed to grow from a waitlist/marketing site into a complete equity management platform.
+## Project Architecture
 
-## User Preferences
+### Tech Stack
+- **Frontend**: React 18 with TypeScript
+- **Routing**: Wouter
+- **UI Components**: Shadcn UI with Radix UI primitives
+- **Styling**: Tailwind CSS
+- **State Management**: TanStack React Query v5
+- **Backend**: Express.js
+- **Data Storage**: In-memory storage (MemStorage)
+- **Validation**: Zod schemas
+- **Build Tool**: Vite
 
-Preferred communication style: Simple, everyday language.
+### Design System
+- **Typography**: Inter (body), Space Grotesk (display headings)
+- **Primary Colors**: Navy blue (220 65% 20%), Teal accents (185 45% 35%)
+- **Theme**: Dark mode support enabled
+- **Visual Style**: Professional, modern, trust-building aesthetic appropriate for financial software
 
-## System Architecture
+## Features Implemented
 
-### Frontend Architecture
+### Marketing Pages
+1. **Homepage** (`/`)
+   - Hero section with professional boardroom image
+   - Trust bar showing company logos
+   - Three main feature showcases with screenshots
+   - Stats section highlighting key metrics
+   - Testimonials from fictional customers
+   - Waitlist/demo request form
+   
+2. **Features Page** (`/features`)
+   - Detailed feature descriptions
+   - Product screenshots (blurred for privacy)
+   - Benefit cards highlighting key capabilities
+   
+3. **Pricing Page** (`/pricing`)
+   - Three-tier pricing structure:
+     - **Starter**: Free (up to 3 stakeholders)
+     - **Professional**: $14.99/month or $11.99/month annual
+     - **Enterprise**: $59.99/month or $49.99/month annual
+   - Monthly/Annual billing toggle
+   - FAQ section
+   
+4. **About Page** (`/about`)
+   - Company story and mission
+   - Core values presentation
+   - Brand philosophy explanation
 
-**Framework**: React 18 with TypeScript, using Vite as the build tool and development server.
+### Backend Functionality
+- **Waitlist API**: 
+  - `POST /api/waitlist` - Submit demo requests
+  - `GET /api/waitlist` - Retrieve all submissions (for internal use)
+- **Data Validation**: Zod schemas with email validation, required fields, trimming
+- **Storage**: In-memory storage for development (ready to migrate to database)
 
-**UI Component Library**: shadcn/ui components built on Radix UI primitives, providing accessible, customizable components following the "new-york" style preset.
+## Data Models
 
-**Styling**: Tailwind CSS with a custom design system implementing the Captavola brand guidelines:
-- Primary colors: Brand Navy (220 65% 20%) and Deep Teal (185 45% 35%)
-- Typography: Inter for body text and Space Grotesk for display headlines
-- Spacing system using consistent Tailwind units (4, 8, 12, 16, 20, 24)
-- Dark mode support via CSS variables
+### Waitlist Submissions
+```typescript
+{
+  id: string (UUID)
+  name: string (required, trimmed, min 1 char)
+  email: string (required, valid email)
+  company: string | null (optional)
+  message: string | null (optional)
+  createdAt: Date
+}
+```
 
-**Routing**: wouter for client-side routing, providing a lightweight alternative to React Router.
+## User Preferences & Requirements
 
-**State Management**: TanStack Query (React Query) for server state management with custom query client configuration. The query client is configured to:
-- Not refetch on window focus or intervals
-- Use infinite stale time by default
-- Provide custom error handling for 401 responses
+### Pricing Structure (Final)
+- Starter tier must be free
+- Professional: $14.99/month, $11.99/month annual (20% discount)
+- Enterprise: $59.99/month, $49.99/month annual
 
-**Form Handling**: React Hook Form with Zod for schema validation via @hookform/resolvers.
+### Design Preferences
+- No SOC 2 compliance badges or bank-grade security claims
+- Product screenshots should be blurred/out of focus where appropriate
+- Transaction tracking screenshot should have binary overlay (1s and 0s)
+- Professional, trustworthy aesthetic suitable for financial software
 
-**Design Philosophy**: Reference-based design drawing from Linear (typography & simplicity), Stripe (trust & professionalism), and Carta (fintech credibility). The design emphasizes trust, transparency, and modern aesthetics.
+### Future Integration
+- Lemon Squeezy payment processing (planned, not yet integrated)
 
-### Backend Architecture
+## Project Structure
 
-**Framework**: Express.js running on Node.js with TypeScript.
+```
+client/
+  src/
+    components/        # Reusable React components
+      ui/             # Shadcn UI components
+      examples/       # Component examples (for development)
+    pages/            # Route pages (Home, Features, Pricing, About)
+    lib/              # Query client and utilities
+server/
+  routes.ts          # Express API routes
+  storage.ts         # Data storage interface
+  index.ts           # Express server setup
+  vite.ts            # Vite dev server integration
+shared/
+  schema.ts          # Shared Zod schemas and types
+```
 
-**Server Structure**: 
-- Entry point in `server/index.ts` with middleware for JSON parsing, URL encoding, and request logging
-- Route registration separated into `server/routes.ts`
-- Request/response logging middleware that captures API calls, responses, and duration
-- Development-focused Vite integration for HMR and SSR during development
+## Development Workflow
 
-**API Design**: RESTful API with routes prefixed with `/api`:
-- `POST /api/waitlist` - Create waitlist submission
-- `GET /api/waitlist` - Retrieve all waitlist submissions
+### Running the Application
+- Command: `npm run dev`
+- Workflow: "Start application" (auto-configured)
+- Port: 5000 (serves both frontend and backend)
+- Hot reload enabled for development
 
-**Data Validation**: Input validation using Zod schemas defined in shared schema files, ensuring type safety across frontend and backend.
+### Key Components
+- **Header**: Responsive navigation with mobile menu
+- **Hero**: Full-screen hero with background image and CTAs
+- **Pricing**: Interactive pricing cards with billing toggle
+- **WaitlistForm**: Form with React Query mutation, loading states, toast notifications
+- **Footer**: Newsletter signup, social links, sitemap
 
-### Data Storage
+## SEO Implementation
+- Meta tags for all pages
+- Open Graph tags for social sharing
+- Descriptive page titles
+- Semantic HTML structure
 
-**ORM**: Drizzle ORM configured for PostgreSQL via `@neondatabase/serverless` driver.
+## Testing
+- End-to-end tests passing (Playwright-based)
+- All navigation flows verified
+- Form submission and API integration tested
+- Pricing toggle functionality confirmed
 
-**Schema Design**: Currently implements:
-- `users` table with username/password authentication fields
-- `waitlist_submissions` table for pre-launch marketing with name, email, company, and message fields
+## Recent Changes (October 22, 2025)
+1. Created complete marketing website with 4 pages
+2. Implemented waitlist/demo request functionality with backend API
+3. Added stricter form validation (email validation, required fields)
+4. Generated custom product screenshots and hero image
+5. Configured three-tier pricing structure per user requirements
+6. Removed security compliance references per user request
+7. Successfully tested all features end-to-end
 
-**Schema Location**: Centralized in `shared/schema.ts` using Drizzle's schema definition with Zod integration for runtime validation.
+## Next Steps / Future Enhancements
+1. Integrate Lemon Squeezy for payment processing
+2. Add blog section for SEO content
+3. Implement email marketing integration for lead nurturing
+4. Add interactive product demos or video walkthroughs
+5. Migrate from in-memory storage to persistent database (PostgreSQL)
+6. Add live chat support widget
+7. Create comprehensive FAQ section
+8. Implement analytics tracking
 
-**Migration Strategy**: Drizzle Kit for database migrations with output to `./migrations` directory.
-
-**Development Storage**: In-memory storage implementation (`MemStorage` class) for development/testing, implementing the `IStorage` interface. This allows development without requiring database connectivity.
-
-**Design Decision**: The application uses a storage abstraction layer (`IStorage` interface) that allows switching between in-memory storage (development) and database-backed storage (production) without changing business logic.
-
-### Authentication & Authorization
-
-**Current State**: Basic user schema exists with username/password fields, but authentication is not yet implemented.
-
-**Session Management**: Dependencies include `connect-pg-simple` for PostgreSQL-backed session storage, indicating planned session-based authentication.
-
-**Future Considerations**: The application is structured to support session-based authentication with PostgreSQL session store.
-
-### External Dependencies
-
-**UI Component Library**: 
-- Radix UI primitives (@radix-ui/*) for accessible, unstyled components
-- shadcn/ui configuration for styled component variants
-- Lucide React for icons
-- react-icons for social media icons (LinkedIn, X/Twitter)
-
-**Data Visualization**: 
-- Recharts for charts and analytics (referenced in chart.tsx component)
-- embla-carousel-react for carousels
-
-**Date Handling**: date-fns for date manipulation and formatting.
-
-**Database**: 
-- Neon Database (@neondatabase/serverless) as the PostgreSQL provider
-- Drizzle ORM for type-safe database queries
-- Expected to use Postgres but currently working with in-memory storage
-
-**Development Tools**:
-- Replit-specific plugins for runtime error overlay, cartographer, and dev banner
-- esbuild for server-side bundling in production
-- tsx for TypeScript execution in development
-
-**Type Safety**: 
-- TypeScript throughout with strict mode enabled
-- Path aliases for clean imports (@/, @shared/, @assets/)
-- Zod for runtime type validation
-
-**Design Assets**: The application references generated images stored in `attached_assets/generated_images/` for hero sections, feature demonstrations, and marketing materials.
-
-### Build & Deployment Strategy
-
-**Development**: 
-- Vite dev server with HMR for client-side code
-- tsx for running TypeScript server code directly
-- Middleware mode for Vite integration with Express
-
-**Production Build**:
-- Vite builds client assets to `dist/public`
-- esbuild bundles server code to `dist/` as ESM modules
-- Static file serving from built assets
-- Server runs on Node.js with bundled dependencies
-
-**Environment Variables**: 
-- `DATABASE_URL` required for database connectivity
-- `NODE_ENV` for environment detection
-- `REPL_ID` for Replit-specific integrations
+## Notes
+- All images are AI-generated and stored in `attached_assets/generated_images/`
+- Currently using in-memory storage (data resets on server restart)
+- Ready for Lemon Squeezy integration when user is ready to launch
+- Design follows Shadcn UI patterns and custom elevation system for interactions
