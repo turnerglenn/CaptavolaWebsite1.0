@@ -29,6 +29,11 @@ export const waitlistSubmissions = pgTable("waitlist_submissions", {
 export const insertWaitlistSubmissionSchema = createInsertSchema(waitlistSubmissions).omit({
   id: true,
   createdAt: true,
+}).extend({
+  name: z.string().trim().min(1, "Name is required"),
+  email: z.string().trim().email("Invalid email address"),
+  company: z.string().trim().optional(),
+  message: z.string().trim().optional(),
 });
 
 export type InsertWaitlistSubmission = z.infer<typeof insertWaitlistSubmissionSchema>;
