@@ -1,13 +1,27 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import { insertWaitlistSubmissionSchema } from "@shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // put application routes here
-  // prefix all routes with /api
+  app.post("/api/waitlist", async (req, res) => {
+    try {
+      const validatedData = insertWaitlistSubmissionSchema.parse(req.body);
+      const submission = await storage.createWaitlistSubmission(validatedData);
+      res.status(201).json(submission);
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
+    }
+  });
 
-  // use storage to perform CRUD operations on the storage interface
-  // e.g. storage.insertUser(user) or storage.getUserByUsername(username)
+  app.get("/api/waitlist", async (req, res) => {
+    try {
+      const submissions = await storage.getAllWaitlistSubmissions();
+      res.json(submissions);
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
 
   const httpServer = createServer(app);
 
