@@ -11,32 +11,28 @@ export default function Pricing() {
     {
       name: "Starter",
       description: "Perfect for early-stage startups",
-      monthlyPrice: 49,
-      annualPrice: 39,
+      monthlyPrice: 0,
+      annualPrice: 0,
       features: [
-        "Up to 25 stakeholders",
-        "Basic cap table management",
+        "Up to 3 stakeholders",
         "Email support",
+        "Basic cap table management",
         "Document storage (1GB)",
         "Export to Excel",
       ],
-      cta: "Start Free Trial",
+      cta: "Get Started Free",
       highlighted: false,
     },
     {
       name: "Professional",
       description: "For growing companies",
-      monthlyPrice: 149,
-      annualPrice: 119,
+      monthlyPrice: 14,
+      annualPrice: 11.20,
       features: [
-        "Unlimited stakeholders",
-        "Advanced cap table & modeling",
+        "Up to 10 stakeholders",
         "Priority support",
         "Document storage (50GB)",
-        "API access",
-        "Investor portal",
-        "Custom reports",
-        "Vesting schedules",
+        "Reports",
       ],
       cta: "Start Free Trial",
       highlighted: true,
@@ -45,18 +41,15 @@ export default function Pricing() {
     {
       name: "Enterprise",
       description: "For established organizations",
-      monthlyPrice: null,
-      annualPrice: null,
+      monthlyPrice: 55,
+      annualPrice: 55,
       features: [
-        "Everything in Professional",
-        "Dedicated account manager",
-        "Custom integrations",
-        "Advanced security & compliance",
-        "White-glove onboarding",
-        "SLA guarantee",
-        "Custom contract terms",
+        "All features of Professional",
+        "Unlimited stakeholders",
+        "Investor portal",
+        "Vesting schedules",
       ],
-      cta: "Contact Sales",
+      cta: "Start Free Trial",
       highlighted: false,
     },
   ];
@@ -124,7 +117,11 @@ export default function Pricing() {
               </div>
 
               <div className="mb-6">
-                {tier.monthlyPrice !== null ? (
+                {tier.monthlyPrice === 0 ? (
+                  <span className="text-4xl font-bold text-foreground">
+                    Free
+                  </span>
+                ) : (
                   <>
                     <span className="text-4xl font-bold text-foreground">
                       $
@@ -133,16 +130,12 @@ export default function Pricing() {
                         : tier.monthlyPrice}
                     </span>
                     <span className="text-muted-foreground">/month</span>
-                    {billingCycle === "annual" && (
+                    {billingCycle === "annual" && tier.annualPrice !== tier.monthlyPrice && (
                       <p className="text-xs text-muted-foreground mt-1">
                         Billed annually
                       </p>
                     )}
                   </>
-                ) : (
-                  <span className="text-4xl font-bold text-foreground">
-                    Custom
-                  </span>
                 )}
               </div>
 
