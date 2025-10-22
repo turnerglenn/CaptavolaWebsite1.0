@@ -12,14 +12,6 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/60" />
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-        <Badge
-          variant="secondary"
-          className="mb-6 bg-primary/20 text-primary-foreground border-primary/30 backdrop-blur-sm"
-          data-testid="badge-soc2"
-        >
-          SOC 2 Compliant
-        </Badge>
-
         <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
           Give Every Stakeholder
           <br />

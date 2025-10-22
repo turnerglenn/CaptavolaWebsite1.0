@@ -1,8 +1,8 @@
 import { Card } from "@/components/ui/card";
 import { Shield, Users, TrendingUp, FileText, Bell, Lock } from "lucide-react";
 import capTableImage from "@assets/generated_images/Cap_table_dashboard_screenshot_d447c923.png";
-import communicationImage from "@assets/generated_images/Investor_communication_interface_mockup_cae994da.png";
-import transactionImage from "@assets/generated_images/Transaction_tracking_interface_screenshot_d7050b04.png";
+import communicationImage from "@assets/generated_images/Blurred_investor_communication_interface_f6669547.png";
+import transactionImage from "@assets/generated_images/Blurred_transaction_interface_with_binary_46a38d7a.png";
 
 export default function Features() {
   const mainFeatures = [
@@ -31,14 +31,9 @@ export default function Features() {
 
   const benefits = [
     {
-      icon: Shield,
-      title: "Bank-Grade Security",
-      description: "Your sensitive equity data protected with enterprise-level encryption and SOC 2 compliance.",
-    },
-    {
       icon: Users,
-      title: "Unlimited Stakeholders",
-      description: "No limits on investors, employees, or advisors. Grow your cap table as your company scales.",
+      title: "Flexible Stakeholder Management",
+      description: "Manage investors, employees, and advisors with ease. Scale your cap table as your company grows.",
     },
     {
       icon: TrendingUp,
@@ -59,6 +54,11 @@ export default function Features() {
       icon: Lock,
       title: "Role-Based Access",
       description: "Control who sees what with granular permission settings for every stakeholder.",
+    },
+    {
+      icon: Shield,
+      title: "Data Protection",
+      description: "Your sensitive equity data protected with enterprise-level encryption and security.",
     },
   ];
 

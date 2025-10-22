@@ -1,7 +1,7 @@
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Shield, Lock } from "lucide-react";
+import { } from "lucide-react";
 import { SiLinkedin, SiX } from "react-icons/si";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -91,17 +91,6 @@ export default function Footer() {
 
         <div className="border-t pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex items-center gap-6">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Shield className="w-4 h-4" />
-                <span>SOC 2 Compliant</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Lock className="w-4 h-4" />
-                <span>256-bit Encryption</span>
-              </div>
-            </div>
-
             <div className="flex items-center gap-4">
               <Button
                 variant="ghost"

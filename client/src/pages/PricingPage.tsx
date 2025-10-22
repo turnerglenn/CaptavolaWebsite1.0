@@ -52,9 +52,8 @@ export default function PricingPage() {
                   Is my data secure?
                 </h4>
                 <p className="text-muted-foreground">
-                  Yes. We use bank-grade 256-bit encryption, are SOC 2 compliant,
-                  and undergo regular security audits. Your data is yours and is
-                  never shared.
+                  Yes. We use enterprise-grade encryption and undergo regular security
+                  audits. Your data is yours and is never shared.
                 </p>
               </div>
             </div>
