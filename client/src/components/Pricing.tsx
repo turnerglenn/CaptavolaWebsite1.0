@@ -26,8 +26,8 @@ export default function Pricing() {
     {
       name: "Professional",
       description: "For growing companies",
-      monthlyPrice: 14,
-      annualPrice: 11.20,
+      monthlyPrice: 14.99,
+      annualPrice: 11.99,
       features: [
         "Up to 10 stakeholders",
         "Priority support",
@@ -41,8 +41,8 @@ export default function Pricing() {
     {
       name: "Enterprise",
       description: "For established organizations",
-      monthlyPrice: 55,
-      annualPrice: 55,
+      monthlyPrice: 59.99,
+      annualPrice: 49.99,
       features: [
         "All features of Professional",
         "Unlimited stakeholders",
