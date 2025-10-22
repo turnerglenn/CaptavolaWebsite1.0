@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Shield, Users, TrendingUp, FileText, Bell, Lock } from "lucide-react";
 import capTableImage from "@assets/generated_images/Cap_table_dashboard_screenshot_d447c923.png";
-import communicationImage from "@assets/generated_images/Blurred_investor_communication_interface_f6669547.png";
+import communicationImage from "@assets/generated_images/Email_tracking_dashboard_interface_996856a1.png";
 import transactionImage from "@assets/generated_images/Blurred_transaction_interface_with_binary_46a38d7a.png";
 
 export default function Features() {
