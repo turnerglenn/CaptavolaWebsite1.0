@@ -47,9 +47,9 @@ export default function Header() {
             <Button
               variant="ghost"
               data-testid="button-signin"
-              onClick={() => console.log("Sign in clicked")}
+              asChild
             >
-              Sign In
+              <a href="https://dev-app.captavola.com/">Sign In</a>
             </Button>
             <Button
               data-testid="button-get-started"
@@ -95,9 +95,9 @@ export default function Header() {
                 <Button
                   variant="ghost"
                   data-testid="button-mobile-signin"
-                  onClick={() => console.log("Sign in clicked")}
+                  asChild
                 >
-                  Sign In
+                  <a href="https://dev-app.captavola.com/">Sign In</a>
                 </Button>
                 <Button
                   data-testid="button-mobile-get-started"
