@@ -25,8 +25,8 @@ export default function PricingPage() {
                   Do you offer a free trial?
                 </h4>
                 <p className="text-muted-foreground">
-                  Yes! All plans include a 14-day free trial with full access to
-                  features. No credit card required to start.
+                  Trial availability varies by plan. Any available trial period is
+                  shown directly on the relevant pricing card.
                 </p>
               </div>
               <div>
