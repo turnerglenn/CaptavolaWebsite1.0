@@ -30,13 +30,28 @@ export async function fetchPublicPricingPlans(): Promise<PublicPricingResponse> 
   const requestUrl = API_BASE?.trim()
     ? new URL("/api/public/pricing-plans", API_BASE).toString()
     : "/api/public/pricing-plans";
-
-  const response = await fetch(requestUrl, {
+  const fallbackUrl = "/api/public/pricing-plans";
+  const requestInit: RequestInit = {
     method: "GET",
     headers: {
       "Accept": "application/json",
     },
-  });
+  };
+
+  let response: Response;
+  try {
+    response = await fetch(requestUrl, requestInit);
+  } catch {
+    if (requestUrl !== fallbackUrl) {
+      response = await fetch(fallbackUrl, requestInit);
+    } else {
+      throw new Error("Failed to fetch pricing plans");
+    }
+  }
+
+  if (!response.ok && requestUrl !== fallbackUrl) {
+    response = await fetch(fallbackUrl, requestInit);
+  }
 
   if (!response.ok) {
     throw new Error(`Failed to fetch pricing plans (${response.status})`);
