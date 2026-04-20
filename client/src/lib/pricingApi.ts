@@ -27,12 +27,9 @@ export type PublicPricingResponse = z.infer<typeof publicPricingResponseSchema>;
 
 export async function fetchPublicPricingPlans(): Promise<PublicPricingResponse> {
   const API_BASE = import.meta.env.VITE_PUBLIC_PRICING_API_BASE_URL;
-  console.log("Pricing import.meta.env:", import.meta.env);
-  console.log("Pricing API Base:", API_BASE);
   const requestUrl = API_BASE?.trim()
     ? new URL("/api/public/pricing-plans", API_BASE).toString()
     : "/api/public/pricing-plans";
-  console.log("Pricing request URL:", requestUrl);
 
   const response = await fetch(requestUrl, {
     method: "GET",
