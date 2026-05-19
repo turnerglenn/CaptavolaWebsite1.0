@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Check } from "lucide-react";
-import { fetchPublicPricingPlans, getTrialAwareCtaLabel } from "@/lib/pricingApi";
+import { fetchPublicPricingPlans, fetchTrialLength, getTrialAwareCtaLabel } from "@/lib/pricingApi";
 
 export default function Pricing() {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("annual");
@@ -13,6 +13,10 @@ export default function Pricing() {
     queryKey: ["public", "pricing-plans"],
     queryFn: fetchPublicPricingPlans,
   });
+  const trialLengthQuery = useQuery({
+    queryKey: ["platform", "settings", "trial-length"],
+    queryFn: fetchTrialLength,
+  });
 
   if (pricingQuery.isError && import.meta.env.DEV) {
     console.error("Failed to load public pricing plans", pricingQuery.error);
@@ -20,6 +24,7 @@ export default function Pricing() {
 
   const tiers = pricingQuery.data?.plans ?? [];
   const annualBadgeLabel = pricingQuery.data?.annualBadgeLabel;
+  const platformTrialDays = trialLengthQuery.isSuccess ? trialLengthQuery.data : undefined;
 
   useEffect(() => {
     if (!hasUserSelectedBillingCycle.current && pricingQuery.data?.defaultBillingInterval) {
@@ -176,7 +181,7 @@ export default function Pricing() {
                   data-testid={`button-cta-${tier.code}`}
                 >
                   <a href={tier.ctaUrl}>
-                    {getTrialAwareCtaLabel(tier.ctaLabel, tier.trialDays)}
+                    {getTrialAwareCtaLabel(tier.ctaLabel, platformTrialDays ?? tier.trialDays)}
                   </a>
                 </Button>
               ) : (

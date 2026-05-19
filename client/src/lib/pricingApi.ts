@@ -67,6 +67,64 @@ const publicPricingResponseSchema = z.object({
 export type PublicPricingPlan = z.infer<typeof publicPricingPlanSchema>;
 export type PublicPricingResponse = z.infer<typeof publicPricingResponseSchema>;
 
+const trialLengthKeys = [
+  "trialLength",
+  "trialLengthDays",
+  "trialDays",
+  "defaultTrialLength",
+  "defaultTrialDays",
+  "freeTrialDays",
+  "value",
+  "settingValue",
+  "currentValue",
+  "current",
+  "days",
+] as const;
+
+function normalizeTrialDays(value: unknown): number | null {
+  const normalizedValue = typeof value === "string" ? Number(value.trim()) : value;
+
+  if (
+    typeof normalizedValue === "number" &&
+    Number.isInteger(normalizedValue) &&
+    normalizedValue > 0
+  ) {
+    return normalizedValue;
+  }
+
+  return null;
+}
+
+function parseTrialLengthPayload(payload: unknown): number | null {
+  const directValue = normalizeTrialDays(payload);
+  if (directValue !== null) {
+    return directValue;
+  }
+
+  if (!payload || typeof payload !== "object") {
+    return null;
+  }
+
+  for (const key of trialLengthKeys) {
+    if (key in payload) {
+      const value = normalizeTrialDays((payload as Record<string, unknown>)[key]);
+      if (value !== null) {
+        return value;
+      }
+    }
+  }
+
+  if ("data" in payload) {
+    return parseTrialLengthPayload((payload as Record<string, unknown>).data);
+  }
+
+  if ("setting" in payload) {
+    return parseTrialLengthPayload((payload as Record<string, unknown>).setting);
+  }
+
+  return null;
+}
+
 export function getTrialAwareCtaLabel(ctaLabel: string, trialDays: number | null): string {
   if (trialDays === null) {
     return ctaLabel
@@ -93,7 +151,7 @@ export function getTrialAwareCtaLabel(ctaLabel: string, trialDays: number | null
   return ctaLabel;
 }
 
-export function getDefaultTrialCtaLabel(plans: PublicPricingPlan[]): string | null {
+export function getDefaultTrialCtaLabel(plans: PublicPricingPlan[], trialDaysOverride?: number | null): string | null {
   const preferredPlan =
     plans.find((plan) => plan.isFeatured && plan.ctaLabel) ??
     plans.find((plan) => plan.ctaLabel);
@@ -102,15 +160,13 @@ export function getDefaultTrialCtaLabel(plans: PublicPricingPlan[]): string | nu
     return null;
   }
 
-  return getTrialAwareCtaLabel(preferredPlan.ctaLabel, preferredPlan.trialDays);
+  return getTrialAwareCtaLabel(preferredPlan.ctaLabel, trialDaysOverride ?? preferredPlan.trialDays);
 }
 
-export async function fetchPublicPricingPlans(): Promise<PublicPricingResponse> {
+async function fetchJsonWithFallback(path: string, errorLabel: string): Promise<unknown> {
   const API_BASE = import.meta.env.VITE_PUBLIC_PRICING_API_BASE_URL;
-  const requestUrl = API_BASE?.trim()
-    ? new URL("/api/public/pricing-plans", API_BASE).toString()
-    : "/api/public/pricing-plans";
-  const fallbackUrl = "/api/public/pricing-plans";
+  const requestUrl = API_BASE?.trim() ? new URL(path, API_BASE).toString() : path;
+  const fallbackUrl = path;
   const requestInit: RequestInit = {
     method: "GET",
     headers: {
@@ -125,7 +181,7 @@ export async function fetchPublicPricingPlans(): Promise<PublicPricingResponse> 
     if (requestUrl !== fallbackUrl) {
       response = await fetch(fallbackUrl, requestInit);
     } else {
-      throw new Error("Failed to fetch pricing plans");
+      throw new Error(`Failed to fetch ${errorLabel}`);
     }
   }
 
@@ -134,10 +190,14 @@ export async function fetchPublicPricingPlans(): Promise<PublicPricingResponse> 
   }
 
   if (!response.ok) {
-    throw new Error(`Failed to fetch pricing plans (${response.status})`);
+    throw new Error(`Failed to fetch ${errorLabel} (${response.status})`);
   }
 
-  const payload: unknown = await response.json();
+  return await response.json();
+}
+
+export async function fetchPublicPricingPlans(): Promise<PublicPricingResponse> {
+  const payload = await fetchJsonWithFallback("/api/public/pricing-plans", "pricing plans");
   const parsed = publicPricingResponseSchema.safeParse(payload);
   if (!parsed.success) {
     throw new Error("Invalid pricing response shape");
@@ -151,4 +211,9 @@ export async function fetchPublicPricingPlans(): Promise<PublicPricingResponse> 
       return a.code.localeCompare(b.code);
     }),
   };
+}
+
+export async function fetchTrialLength(): Promise<number | null> {
+  const payload = await fetchJsonWithFallback("/api/platform/settings/trial-length", "trial length");
+  return parseTrialLengthPayload(payload);
 }
