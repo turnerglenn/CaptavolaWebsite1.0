@@ -6,6 +6,18 @@ import { Badge } from "@/components/ui/badge";
 import { Check } from "lucide-react";
 import { fetchPublicPricingPlans } from "@/lib/pricingApi";
 
+function getTrialAwareCtaLabel(ctaLabel: string, trialDays: number | null): string {
+  if (trialDays === null) {
+    return ctaLabel;
+  }
+
+  if (!/start\s+(free\s+)?trial/i.test(ctaLabel)) {
+    return ctaLabel;
+  }
+
+  return `Start ${trialDays}-Day Trial`;
+}
+
 export default function Pricing() {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("annual");
   const pricingQuery = useQuery({
@@ -138,11 +150,6 @@ export default function Pricing() {
                     )}
                   </>
                 )}
-                {tier.trialDays !== null && (
-                  <p className="text-xs text-muted-foreground mt-2">
-                    {tier.trialDays}-day free trial
-                  </p>
-                )}
               </div>
 
               <ul className="space-y-3 mb-8 flex-1">
@@ -166,7 +173,7 @@ export default function Pricing() {
                   data-testid={`button-cta-${tier.code}`}
                 >
                   <a href={tier.ctaUrl}>
-                    {tier.ctaLabel}
+                    {getTrialAwareCtaLabel(tier.ctaLabel, tier.trialDays)}
                   </a>
                 </Button>
               ) : (

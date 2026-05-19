@@ -26,7 +26,7 @@ export default function PricingPage() {
                 </h4>
                 <p className="text-muted-foreground">
                   Trial availability varies by plan. Any available trial period is
-                  shown directly on the relevant pricing card.
+                  shown directly in the relevant Start Trial button.
                 </p>
               </div>
               <div>
