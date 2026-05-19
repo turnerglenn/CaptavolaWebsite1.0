@@ -19,11 +19,41 @@ const publicPricingPlanSchema = z.object({
 });
 
 const publicPricingResponseSchema = z.object({
+  defaultBillingInterval: z.enum(["monthly", "annual"]).optional().default("annual"),
+  annualBadgeLabel: z.string().nullable().optional(),
   plans: z.array(publicPricingPlanSchema),
 });
 
 export type PublicPricingPlan = z.infer<typeof publicPricingPlanSchema>;
 export type PublicPricingResponse = z.infer<typeof publicPricingResponseSchema>;
+
+export function getTrialAwareCtaLabel(ctaLabel: string, trialDays: number | null): string {
+  if (trialDays === null) {
+    return ctaLabel;
+  }
+
+  if (/start\s+free\s+trial/i.test(ctaLabel)) {
+    return ctaLabel.replace(/start\s+free\s+trial/i, `Start ${trialDays}-Day Free Trial`);
+  }
+
+  if (/start\s+trial/i.test(ctaLabel)) {
+    return ctaLabel.replace(/start\s+trial/i, `Start ${trialDays}-Day Trial`);
+  }
+
+  return ctaLabel;
+}
+
+export function getDefaultTrialCtaLabel(plans: PublicPricingPlan[]): string | null {
+  const preferredPlan =
+    plans.find((plan) => plan.isFeatured && plan.ctaLabel) ??
+    plans.find((plan) => plan.ctaLabel);
+
+  if (!preferredPlan?.ctaLabel) {
+    return null;
+  }
+
+  return getTrialAwareCtaLabel(preferredPlan.ctaLabel, preferredPlan.trialDays);
+}
 
 export async function fetchPublicPricingPlans(): Promise<PublicPricingResponse> {
   const API_BASE = import.meta.env.VITE_PUBLIC_PRICING_API_BASE_URL;
@@ -64,6 +94,8 @@ export async function fetchPublicPricingPlans(): Promise<PublicPricingResponse> 
   }
 
   return {
+    defaultBillingInterval: parsed.data.defaultBillingInterval,
+    annualBadgeLabel: parsed.data.annualBadgeLabel,
     plans: [...parsed.data.plans].sort((a, b) => {
       if (a.displayOrder !== b.displayOrder) return a.displayOrder - b.displayOrder;
       return a.code.localeCompare(b.code);

@@ -1,25 +1,14 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Check } from "lucide-react";
-import { fetchPublicPricingPlans } from "@/lib/pricingApi";
-
-function getTrialAwareCtaLabel(ctaLabel: string, trialDays: number | null): string {
-  if (trialDays === null) {
-    return ctaLabel;
-  }
-
-  if (!/start\s+(free\s+)?trial/i.test(ctaLabel)) {
-    return ctaLabel;
-  }
-
-  return `Start ${trialDays}-Day Trial`;
-}
+import { fetchPublicPricingPlans, getTrialAwareCtaLabel } from "@/lib/pricingApi";
 
 export default function Pricing() {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("annual");
+  const hasUserSelectedBillingCycle = useRef(false);
   const pricingQuery = useQuery({
     queryKey: ["public", "pricing-plans"],
     queryFn: fetchPublicPricingPlans,
@@ -30,6 +19,18 @@ export default function Pricing() {
   }
 
   const tiers = pricingQuery.data?.plans ?? [];
+  const annualBadgeLabel = pricingQuery.data?.annualBadgeLabel;
+
+  useEffect(() => {
+    if (!hasUserSelectedBillingCycle.current && pricingQuery.data?.defaultBillingInterval) {
+      setBillingCycle(pricingQuery.data.defaultBillingInterval);
+    }
+  }, [pricingQuery.data?.defaultBillingInterval]);
+
+  const selectBillingCycle = (cycle: "monthly" | "annual") => {
+    hasUserSelectedBillingCycle.current = true;
+    setBillingCycle(cycle);
+  };
 
   return (
     <section className="py-20 bg-muted/30">
@@ -46,7 +47,7 @@ export default function Pricing() {
             <Button
               variant={billingCycle === "monthly" ? "secondary" : "ghost"}
               size="sm"
-              onClick={() => setBillingCycle("monthly")}
+              onClick={() => selectBillingCycle("monthly")}
               data-testid="button-billing-monthly"
             >
               Monthly
@@ -54,13 +55,15 @@ export default function Pricing() {
             <Button
               variant={billingCycle === "annual" ? "secondary" : "ghost"}
               size="sm"
-              onClick={() => setBillingCycle("annual")}
+              onClick={() => selectBillingCycle("annual")}
               data-testid="button-billing-annual"
             >
               Annual
-              <Badge variant="secondary" className="ml-2 text-xs no-default-hover-elevate no-default-active-elevate">
-                Save 20%
-              </Badge>
+              {annualBadgeLabel && (
+                <Badge variant="secondary" className="ml-2 text-xs no-default-hover-elevate no-default-active-elevate">
+                  {annualBadgeLabel}
+                </Badge>
+              )}
             </Button>
           </div>
         </div>
