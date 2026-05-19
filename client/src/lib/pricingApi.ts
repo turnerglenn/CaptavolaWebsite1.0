@@ -1,5 +1,22 @@
 import { z } from "zod";
 
+const normalizedTrialDaysSchema = z.preprocess((value) => {
+  if (value === undefined || value === null || value === "") {
+    return null;
+  }
+
+  const normalizedValue = typeof value === "string" ? Number(value.trim()) : value;
+  if (
+    typeof normalizedValue === "number" &&
+    Number.isInteger(normalizedValue) &&
+    normalizedValue <= 0
+  ) {
+    return null;
+  }
+
+  return normalizedValue;
+}, z.number().int().positive().nullable());
+
 const publicPricingPlanSchema = z.object({
   code: z.string(),
   name: z.string(),
@@ -12,11 +29,34 @@ const publicPricingPlanSchema = z.object({
   billingAnnualLabel: z.string(),
   isFeatured: z.boolean(),
   displayOrder: z.number().int(),
-  trialDays: z.number().int().nullable(),
+  trialDays: normalizedTrialDaysSchema.optional(),
+  trial_days: normalizedTrialDaysSchema.optional(),
+  trialPeriodDays: normalizedTrialDaysSchema.optional(),
+  trial_period_days: normalizedTrialDaysSchema.optional(),
+  freeTrialDays: normalizedTrialDaysSchema.optional(),
+  free_trial_days: normalizedTrialDaysSchema.optional(),
   ctaLabel: z.string().nullable(),
   ctaUrl: z.string().nullable(),
   features: z.array(z.string()),
-});
+}).transform(({
+  trialDays,
+  trial_days,
+  trialPeriodDays,
+  trial_period_days,
+  freeTrialDays,
+  free_trial_days,
+  ...plan
+}) => ({
+  ...plan,
+  trialDays:
+    trialDays ??
+    trial_days ??
+    trialPeriodDays ??
+    trial_period_days ??
+    freeTrialDays ??
+    free_trial_days ??
+    null,
+}));
 
 const publicPricingResponseSchema = z.object({
   defaultBillingInterval: z.enum(["monthly", "annual"]).optional().default("annual"),
@@ -29,15 +69,25 @@ export type PublicPricingResponse = z.infer<typeof publicPricingResponseSchema>;
 
 export function getTrialAwareCtaLabel(ctaLabel: string, trialDays: number | null): string {
   if (trialDays === null) {
-    return ctaLabel;
+    return ctaLabel
+      .replace(/start\s+\d+\s*[- ]?\s*days?\s+free\s+trial/i, "Start Free Trial")
+      .replace(/start\s+\d+\s*[- ]?\s*days?\s+trial/i, "Start Trial");
   }
 
-  if (/start\s+free\s+trial/i.test(ctaLabel)) {
-    return ctaLabel.replace(/start\s+free\s+trial/i, `Start ${trialDays}-Day Free Trial`);
+  const trialLengthLabel = `${trialDays}-Day`;
+
+  if (/start\s+(?:\d+\s*[- ]?\s*days?\s+)?free\s+trial/i.test(ctaLabel)) {
+    return ctaLabel.replace(
+      /start\s+(?:\d+\s*[- ]?\s*days?\s+)?free\s+trial/i,
+      `Start ${trialLengthLabel} Free Trial`,
+    );
   }
 
-  if (/start\s+trial/i.test(ctaLabel)) {
-    return ctaLabel.replace(/start\s+trial/i, `Start ${trialDays}-Day Trial`);
+  if (/start\s+(?:\d+\s*[- ]?\s*days?\s+)?trial/i.test(ctaLabel)) {
+    return ctaLabel.replace(
+      /start\s+(?:\d+\s*[- ]?\s*days?\s+)?trial/i,
+      `Start ${trialLengthLabel} Trial`,
+    );
   }
 
   return ctaLabel;
