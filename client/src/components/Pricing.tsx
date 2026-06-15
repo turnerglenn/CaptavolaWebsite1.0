@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Check } from "lucide-react";
+import { Check, Minus } from "lucide-react";
 import { fetchPublicPricingPlans, fetchTrialLength, getTrialAwareCtaLabel } from "@/lib/pricingApi";
 
 export default function Pricing() {
@@ -158,20 +158,40 @@ export default function Pricing() {
                     )}
                   </>
                 )}
+                {(platformTrialDays ?? tier.trialDays) && (
+                  <p className="text-xs text-primary font-medium mt-2" data-testid={`text-trial-${tier.code}`}>
+                    {platformTrialDays ?? tier.trialDays}-day free trial included
+                  </p>
+                )}
               </div>
 
-              <ul className="space-y-3 mb-8 flex-1">
+              <div className="space-y-3 mb-8 flex-1">
                 {tier.features.map((feature, featureIndex) => (
-                  <li
-                    key={featureIndex}
+                  <div
+                    key={`feature-${featureIndex}`}
                     className="flex items-start gap-3"
                     data-testid={`text-feature-${index}-${featureIndex}`}
                   >
                     <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                     <span className="text-sm text-foreground">{feature}</span>
-                  </li>
+                  </div>
                 ))}
-              </ul>
+                {tier.limits.length > 0 && (
+                  <>
+                    {tier.features.length > 0 && <div className="border-t my-2" />}
+                    {tier.limits.map((limit, limitIndex) => (
+                      <div
+                        key={`limit-${limitIndex}`}
+                        className="flex items-start gap-3"
+                        data-testid={`text-limit-${index}-${limitIndex}`}
+                      >
+                        <Minus className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+                        <span className="text-sm text-muted-foreground">{limit}</span>
+                      </div>
+                    ))}
+                  </>
+                )}
+              </div>
 
               {tier.ctaLabel && tier.ctaUrl ? (
                 <Button

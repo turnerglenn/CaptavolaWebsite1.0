@@ -37,7 +37,8 @@ const publicPricingPlanSchema = z.object({
   free_trial_days: normalizedTrialDaysSchema.optional(),
   ctaLabel: z.string().nullable(),
   ctaUrl: z.string().nullable(),
-  features: z.array(z.string()),
+  features: z.array(z.string()).default([]),
+  limits: z.array(z.string()).optional().default([]),
 }).transform(({
   trialDays,
   trial_days,
