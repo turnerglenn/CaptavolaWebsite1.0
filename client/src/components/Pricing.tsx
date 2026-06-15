@@ -41,6 +41,9 @@ export default function Pricing() {
     <section className="py-20 bg-muted/30">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-12">
+          <p className="font-display text-sm font-bold text-muted-foreground uppercase tracking-widest mb-3">
+            Testing Pricing Page
+          </p>
           <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-4">
             Simple, Transparent Pricing
           </h2>
