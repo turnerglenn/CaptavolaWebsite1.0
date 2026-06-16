@@ -1,20 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
-import { fetchPublicPricingPlans, fetchTrialLength, getDefaultTrialCtaLabel } from "@/lib/pricingApi";
+import { fetchPublicPricingPlans, getDefaultTrialCtaLabel } from "@/lib/pricingApi";
 
 export default function CTASection() {
   const pricingQuery = useQuery({
     queryKey: ["public", "pricing-plans"],
     queryFn: fetchPublicPricingPlans,
   });
-  const trialLengthQuery = useQuery({
-    queryKey: ["platform", "settings", "trial-length"],
-    queryFn: fetchTrialLength,
-  });
-  const platformTrialDays = trialLengthQuery.isSuccess ? trialLengthQuery.data : undefined;
   const defaultTrialCtaLabel = getDefaultTrialCtaLabel(
     pricingQuery.data?.plans ?? [],
-    platformTrialDays,
   ) ?? "Start Free Trial";
 
   return (

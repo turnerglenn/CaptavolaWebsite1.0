@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
-import { fetchPublicPricingPlans, fetchTrialLength, getDefaultTrialCtaLabel } from "@/lib/pricingApi";
+import { fetchPublicPricingPlans, getDefaultTrialCtaLabel } from "@/lib/pricingApi";
 import heroImage from "@assets/generated_images/Professional_boardroom_meeting_scene_960fcdcc.png";
 
 export default function Hero() {
@@ -9,14 +9,8 @@ export default function Hero() {
     queryKey: ["public", "pricing-plans"],
     queryFn: fetchPublicPricingPlans,
   });
-  const trialLengthQuery = useQuery({
-    queryKey: ["platform", "settings", "trial-length"],
-    queryFn: fetchTrialLength,
-  });
-  const platformTrialDays = trialLengthQuery.isSuccess ? trialLengthQuery.data : undefined;
   const defaultTrialCtaLabel = getDefaultTrialCtaLabel(
     pricingQuery.data?.plans ?? [],
-    platformTrialDays,
   ) ?? "Start Free Trial";
 
   return (
