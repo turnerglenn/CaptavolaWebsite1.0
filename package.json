@@ -7,6 +7,7 @@
     "dev": "NODE_ENV=development tsx server/index.ts",
     "build": "vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
     "build:develop": "vite build --mode development && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
+    "build:cf": "if [ \"$CF_PAGES_BRANCH\" = \"develop\" ]; then yarn build:develop; else yarn build; fi",
     "start": "NODE_ENV=production node dist/index.js",
     "check": "tsc",
     "db:push": "drizzle-kit push"
