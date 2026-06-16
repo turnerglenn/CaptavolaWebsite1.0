@@ -147,7 +147,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/parser@npm:^7.1.0, @babel/parser@npm:^7.20.7, @babel/parser@npm:^7.26.9, @babel/parser@npm:^7.28.6, @babel/parser@npm:^7.29.0":
+"@babel/parser@npm:^7.1.0, @babel/parser@npm:^7.20.7, @babel/parser@npm:^7.28.6, @babel/parser@npm:^7.29.0":
   version: 7.29.2
   resolution: "@babel/parser@npm:7.29.2"
   dependencies:
@@ -198,7 +198,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/traverse@npm:^7.26.9, @babel/traverse@npm:^7.28.6, @babel/traverse@npm:^7.29.0":
+"@babel/traverse@npm:^7.28.6, @babel/traverse@npm:^7.29.0":
   version: 7.29.0
   resolution: "@babel/traverse@npm:7.29.0"
   dependencies:
@@ -213,7 +213,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/types@npm:^7.0.0, @babel/types@npm:^7.20.7, @babel/types@npm:^7.26.9, @babel/types@npm:^7.28.2, @babel/types@npm:^7.28.6, @babel/types@npm:^7.29.0":
+"@babel/types@npm:^7.0.0, @babel/types@npm:^7.20.7, @babel/types@npm:^7.28.2, @babel/types@npm:^7.28.6, @babel/types@npm:^7.29.0":
   version: 7.29.0
   resolution: "@babel/types@npm:7.29.0"
   dependencies:
@@ -2359,34 +2359,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@replit/vite-plugin-cartographer@npm:^0.3.1":
-  version: 0.3.2
-  resolution: "@replit/vite-plugin-cartographer@npm:0.3.2"
-  dependencies:
-    "@babel/parser": "npm:^7.26.9"
-    "@babel/traverse": "npm:^7.26.9"
-    "@babel/types": "npm:^7.26.9"
-    magic-string: "npm:^0.30.12"
-    modern-screenshot: "npm:^4.6.0"
-  checksum: 10c0/8a0a99fbd0ed01f18d3e1dbfc9afe38d25aa0727b5924cf4cfe5bbe500dbb68d678c623e0159459813a0242388cd2b22ca3ff1b4fdb00812d460e699ee80909c
-  languageName: node
-  linkType: hard
-
-"@replit/vite-plugin-dev-banner@npm:^0.1.1":
-  version: 0.1.2
-  resolution: "@replit/vite-plugin-dev-banner@npm:0.1.2"
-  checksum: 10c0/f9f5e614e5feb4cb739b8a20b3a46af4e63dd1a7afd7924f58bd96192b9d5311a10d8059bb2a5d299e7017a870f2f751b57569158e44d54e29c294135abb59fb
-  languageName: node
-  linkType: hard
-
-"@replit/vite-plugin-runtime-error-modal@npm:^0.0.3":
-  version: 0.0.3
-  resolution: "@replit/vite-plugin-runtime-error-modal@npm:0.0.3"
-  dependencies:
-    "@jridgewell/trace-mapping": "npm:^0.3.25"
-  checksum: 10c0/e4440d21b56e9a553f1142eafca0589bc0a4f2b86dc5a36e156ec69b7ffe4f1c83c805ff6a9efbb85296df05c9b708ed7da51eeb4580f8ce85888554d9c5fae6
-  languageName: node
-  linkType: hard
 
 "@rolldown/pluginutils@npm:1.0.0-beta.27":
   version: 1.0.0-beta.27
@@ -4940,7 +4912,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"magic-string@npm:^0.30.12, magic-string@npm:^0.30.21":
+"magic-string@npm:^0.30.21":
   version: 0.30.21
   resolution: "magic-string@npm:0.30.21"
   dependencies:
@@ -5141,12 +5113,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"modern-screenshot@npm:^4.6.0":
-  version: 4.7.0
-  resolution: "modern-screenshot@npm:4.7.0"
-  checksum: 10c0/9c5fbe4f4c73d3dcf0ba7fb76c1671ad148fdedffc84700e0b8ca1c1640a6ab1930718ae1424b0a6517b98d8f18c898ea0e62ee0ca57a25bfce7b914df721a63
-  languageName: node
-  linkType: hard
 
 "motion-dom@npm:^11.18.1":
   version: 11.18.1
@@ -6054,9 +6020,6 @@ __metadata:
     "@radix-ui/react-toggle": "npm:^1.1.3"
     "@radix-ui/react-toggle-group": "npm:^1.1.3"
     "@radix-ui/react-tooltip": "npm:^1.2.0"
-    "@replit/vite-plugin-cartographer": "npm:^0.3.1"
-    "@replit/vite-plugin-dev-banner": "npm:^0.1.1"
-    "@replit/vite-plugin-runtime-error-modal": "npm:^0.0.3"
     "@tailwindcss/typography": "npm:^0.5.15"
     "@tailwindcss/vite": "npm:^4.1.3"
     "@tanstack/react-query": "npm:^5.60.5"
