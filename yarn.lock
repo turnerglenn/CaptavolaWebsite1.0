@@ -2359,7 +2359,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-
 "@rolldown/pluginutils@npm:1.0.0-beta.27":
   version: 1.0.0-beta.27
   resolution: "@rolldown/pluginutils@npm:1.0.0-beta.27"
@@ -5112,7 +5111,6 @@ __metadata:
   checksum: 10c0/3ab4fdecf3be8c5255536faa07064d05caa3dd332bd318ff02e04621f7b3069ca1de9106cfe8e7ced675abfc2bec2ce4c4ef321c4a1bb1fb29df8ae090741913
   languageName: node
   linkType: hard
-
 
 "motion-dom@npm:^11.18.1":
   version: 11.18.1
