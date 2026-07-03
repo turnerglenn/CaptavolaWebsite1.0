@@ -24,6 +24,7 @@ export default function Footer() {
     Product: [
       { label: "Features", href: "/features" },
       { label: "Pricing", href: "/pricing" },
+      { label: "For Firms", href: "/partners" },
       { label: "Security", href: "#security" },
     ],
     Resources: [

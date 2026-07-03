@@ -10,6 +10,7 @@ export default function Header() {
   const navItems = [
     { label: "Features", href: "/features" },
     { label: "Pricing", href: "/pricing" },
+    { label: "For Firms", href: "/partners" },
     { label: "About", href: "/about" },
   ];
 
