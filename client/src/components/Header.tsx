@@ -50,7 +50,7 @@ export default function Header() {
               data-testid="button-signin"
               asChild
             >
-              <a href="https://dev-app.captavola.com/">Sign In</a>
+              <a href="https://app.captavola.com/">Sign In</a>
             </Button>
             <Button
               data-testid="button-get-started"
@@ -98,7 +98,7 @@ export default function Header() {
                   data-testid="button-mobile-signin"
                   asChild
                 >
-                  <a href="https://dev-app.captavola.com/">Sign In</a>
+                  <a href="https://app.captavola.com/">Sign In</a>
                 </Button>
                 <Button
                   data-testid="button-mobile-get-started"
