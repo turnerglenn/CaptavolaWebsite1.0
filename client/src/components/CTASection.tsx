@@ -1,6 +1,16 @@
 import { Button } from "@/components/ui/button";
+import { useQuery } from "@tanstack/react-query";
+import { fetchPublicPricingPlans, getDefaultTrialCtaLabel } from "@/lib/pricingApi";
 
 export default function CTASection() {
+  const pricingQuery = useQuery({
+    queryKey: ["public", "pricing-plans"],
+    queryFn: fetchPublicPricingPlans,
+  });
+  const defaultTrialCtaLabel = getDefaultTrialCtaLabel(
+    pricingQuery.data?.plans ?? [],
+  ) ?? "Start Free Trial";
+
   return (
     <section className="py-20">
       <div className="max-w-4xl mx-auto px-6 text-center">
@@ -17,7 +27,7 @@ export default function CTASection() {
             data-testid="button-cta-trial"
             onClick={() => console.log("Start trial clicked")}
           >
-            Start 14-Day Free Trial
+            {defaultTrialCtaLabel}
           </Button>
           <Button
             size="lg"

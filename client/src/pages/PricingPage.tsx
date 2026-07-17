@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import Header from "@/components/Header";
 import Pricing from "@/components/Pricing";
+import FirmsBand from "@/components/FirmsBand";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 
@@ -14,6 +15,7 @@ export default function PricingPage() {
       <Header />
       <main>
         <Pricing />
+        <FirmsBand />
         <div className="py-16 bg-background">
           <div className="max-w-4xl mx-auto px-6">
             <h3 className="font-display text-2xl font-bold text-foreground mb-8 text-center">
@@ -25,8 +27,8 @@ export default function PricingPage() {
                   Do you offer a free trial?
                 </h4>
                 <p className="text-muted-foreground">
-                  Yes! All plans include a 14-day free trial with full access to
-                  features. No credit card required to start.
+                  Trial availability varies by plan. Any available trial period is
+                  shown directly in the relevant Start Trial button.
                 </p>
               </div>
               <div>

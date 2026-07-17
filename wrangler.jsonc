@@ -1,7 +1,8 @@
 {
-"name": "captavolawebsite",
+"name": "captavolawebsite-dev",
 "compatibility_date": "2025-11-29",
 "assets": {
-    "directory": "./dist/public"
+    "directory": "./dist/public",
+    "not_found_handling": "single-page-application"
     }
 }

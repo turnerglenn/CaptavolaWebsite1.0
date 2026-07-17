@@ -1,8 +1,8 @@
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { } from "lucide-react";
-import { SiLinkedin, SiX } from "react-icons/si";
+import { SiX } from "react-icons/si";
+import { FaLinkedinIn } from "react-icons/fa6";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -24,6 +24,7 @@ export default function Footer() {
     Product: [
       { label: "Features", href: "/features" },
       { label: "Pricing", href: "/pricing" },
+      { label: "For Firms", href: "/partners" },
       { label: "Security", href: "#security" },
     ],
     Resources: [
@@ -98,7 +99,7 @@ export default function Footer() {
                 data-testid="button-linkedin"
                 onClick={() => console.log("LinkedIn clicked")}
               >
-                <SiLinkedin className="w-5 h-5" />
+                <FaLinkedinIn className="w-5 h-5" />
               </Button>
               <Button
                 variant="ghost"
