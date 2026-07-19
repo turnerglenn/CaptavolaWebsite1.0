@@ -164,6 +164,14 @@ export function getDefaultTrialCtaLabel(plans: PublicPricingPlan[], trialDaysOve
   return getTrialAwareCtaLabel(preferredPlan.ctaLabel, trialDaysOverride ?? preferredPlan.trialDays);
 }
 
+export function getDefaultTrialCtaUrl(plans: PublicPricingPlan[]): string | null {
+  const preferredPlan =
+    plans.find((plan) => plan.isFeatured && plan.ctaUrl) ??
+    plans.find((plan) => plan.ctaUrl);
+
+  return preferredPlan?.ctaUrl ?? null;
+}
+
 async function fetchJsonWithFallback(path: string, errorLabel: string): Promise<unknown> {
   const API_BASE = import.meta.env.VITE_PUBLIC_PRICING_API_BASE_URL;
   const requestUrl = API_BASE?.trim() ? new URL(path, API_BASE).toString() : path;

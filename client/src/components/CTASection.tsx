@@ -1,6 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
-import { fetchPublicPricingPlans, getDefaultTrialCtaLabel } from "@/lib/pricingApi";
+import {
+  fetchPublicPricingPlans,
+  getDefaultTrialCtaLabel,
+  getDefaultTrialCtaUrl,
+} from "@/lib/pricingApi";
+import { goToDemoRequest } from "@/lib/links";
 
 export default function CTASection() {
   const pricingQuery = useQuery({
@@ -10,6 +15,8 @@ export default function CTASection() {
   const defaultTrialCtaLabel = getDefaultTrialCtaLabel(
     pricingQuery.data?.plans ?? [],
   ) ?? "Start Free Trial";
+  const trialCtaUrl =
+    getDefaultTrialCtaUrl(pricingQuery.data?.plans ?? []) ?? "/pricing";
 
   return (
     <section className="py-20">
@@ -22,18 +29,14 @@ export default function CTASection() {
           management. No credit card required.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button
-            size="lg"
-            data-testid="button-cta-trial"
-            onClick={() => console.log("Start trial clicked")}
-          >
-            {defaultTrialCtaLabel}
+          <Button asChild size="lg" data-testid="button-cta-trial">
+            <a href={trialCtaUrl}>{defaultTrialCtaLabel}</a>
           </Button>
           <Button
             size="lg"
             variant="outline"
             data-testid="button-cta-demo"
-            onClick={() => console.log("Schedule demo clicked")}
+            onClick={goToDemoRequest}
           >
             Schedule a Demo
           </Button>

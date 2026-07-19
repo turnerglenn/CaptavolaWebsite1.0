@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import { APP_REGISTER_URL, APP_SIGN_IN_URL } from "@/lib/links";
 
 export default function Header() {
   const [location] = useLocation();
@@ -50,13 +51,10 @@ export default function Header() {
               data-testid="button-signin"
               asChild
             >
-              <a href="https://app.captavola.com/">Sign In</a>
+              <a href={APP_SIGN_IN_URL}>Sign In</a>
             </Button>
-            <Button
-              data-testid="button-get-started"
-              onClick={() => console.log("Get started clicked")}
-            >
-              Get Started
+            <Button data-testid="button-get-started" asChild>
+              <a href={APP_REGISTER_URL}>Get Started</a>
             </Button>
           </div>
 
@@ -98,13 +96,10 @@ export default function Header() {
                   data-testid="button-mobile-signin"
                   asChild
                 >
-                  <a href="https://app.captavola.com/">Sign In</a>
+                  <a href={APP_SIGN_IN_URL}>Sign In</a>
                 </Button>
-                <Button
-                  data-testid="button-mobile-get-started"
-                  onClick={() => console.log("Get started clicked")}
-                >
-                  Get Started
+                <Button data-testid="button-mobile-get-started" asChild>
+                  <a href={APP_REGISTER_URL}>Get Started</a>
                 </Button>
               </div>
             </nav>

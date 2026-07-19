@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
+import { DEMO_REQUEST_SECTION_ID } from "@/lib/links";
 
 export default function WaitlistForm() {
   const [formData, setFormData] = useState({
@@ -44,7 +45,7 @@ export default function WaitlistForm() {
   };
 
   return (
-    <section className="py-20 bg-muted/30">
+    <section id={DEMO_REQUEST_SECTION_ID} className="py-20 bg-muted/30">
       <div className="max-w-3xl mx-auto px-6">
         <div className="text-center mb-12">
           <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-4">
