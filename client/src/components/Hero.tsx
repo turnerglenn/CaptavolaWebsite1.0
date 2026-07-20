@@ -1,7 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
-import { fetchPublicPricingPlans, getDefaultTrialCtaLabel } from "@/lib/pricingApi";
+import {
+  fetchPublicPricingPlans,
+  getDefaultTrialCtaLabel,
+  getDefaultTrialCtaUrl,
+} from "@/lib/pricingApi";
+import { goToDemoRequest } from "@/lib/links";
 import heroImage from "@assets/generated_images/Professional_boardroom_meeting_scene_960fcdcc.png";
 
 export default function Hero() {
@@ -12,6 +17,8 @@ export default function Hero() {
   const defaultTrialCtaLabel = getDefaultTrialCtaLabel(
     pricingQuery.data?.plans ?? [],
   ) ?? "Start Free Trial";
+  const trialCtaUrl =
+    getDefaultTrialCtaUrl(pricingQuery.data?.plans ?? []) ?? "/pricing";
 
   return (
     <section className="relative h-[85vh] flex items-center justify-center overflow-hidden">
@@ -36,19 +43,19 @@ export default function Hero() {
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Button
+            asChild
             size="lg"
             className="bg-primary text-primary-foreground border border-primary-border min-w-48"
             data-testid="button-start-trial"
-            onClick={() => console.log("Start free trial clicked")}
           >
-            {defaultTrialCtaLabel}
+            <a href={trialCtaUrl}>{defaultTrialCtaLabel}</a>
           </Button>
           <Button
             size="lg"
             variant="outline"
             className="min-w-48 bg-background/10 backdrop-blur-sm border-white/30 text-white hover:bg-background/20"
             data-testid="button-schedule-demo"
-            onClick={() => console.log("Schedule demo clicked")}
+            onClick={goToDemoRequest}
           >
             Schedule Demo
           </Button>
