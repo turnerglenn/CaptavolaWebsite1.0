@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
+import { submitDemoRequest } from "@/lib/demoRequestApi";
 import { DEMO_REQUEST_SECTION_ID } from "@/lib/links";
 
 export default function WaitlistForm() {
@@ -15,20 +15,24 @@ export default function WaitlistForm() {
     email: "",
     company: "",
     message: "",
+    website: "", // honeypot — stays empty for humans
   });
   const { toast } = useToast();
 
   const submitMutation = useMutation({
-    mutationFn: async (data: typeof formData) => {
-      const response = await apiRequest("POST", "/api/waitlist", data);
-      return await response.json();
-    },
+    mutationFn: async (data: typeof formData) => submitDemoRequest({
+      name: data.name,
+      email: data.email,
+      company: data.company || null,
+      message: data.message || null,
+      website: data.website,
+    }),
     onSuccess: () => {
       toast({
         title: "Thanks for your interest!",
         description: "We'll be in touch soon to schedule your demo.",
       });
-      setFormData({ name: "", email: "", company: "", message: "" });
+      setFormData({ name: "", email: "", company: "", message: "", website: "" });
     },
     onError: (error: any) => {
       toast({
@@ -114,9 +118,23 @@ export default function WaitlistForm() {
               />
             </div>
 
-            <Button 
-              type="submit" 
-              className="w-full" 
+            {/* Honeypot: hidden from humans, bots fill it and get dropped */}
+            <div className="absolute -left-[9999px] top-auto" aria-hidden="true">
+              <label htmlFor="website">Website</label>
+              <input
+                id="website"
+                name="website"
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+                value={formData.website}
+                onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+              />
+            </div>
+
+            <Button
+              type="submit"
+              className="w-full"
               data-testid="button-submit"
               disabled={submitMutation.isPending}
             >
